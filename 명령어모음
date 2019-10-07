@@ -1,0 +1,4 @@
+명령어
+
+
+로그보기 kubectl logs -f {NAME}
