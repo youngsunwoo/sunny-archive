@@ -2,3 +2,5 @@
 
 
 로그보기 kubectl logs -f {NAME}
+
+서버들어가기 kubectl ssh
