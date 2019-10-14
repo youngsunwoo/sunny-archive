@@ -14,9 +14,9 @@
    * BinarySearchImpl은 SortAlgorithm 을 depends on 한다.
    * SortAlgorithm은 BinarySearchImpl의 dependency다.
    * autowiring 의 bean 선택은 3가지 (우선순위순)
-   * 1. @Qualifier
-   * 2. @Primary
-   * 3. 변수명을 dependency 빈 이름으로 (ex private SortAlgorithm bubbleSortAlgorithm)
+   * @Qualifier
+   * @Primary
+   * 변수명을 dependency 빈 이름으로 (ex private SortAlgorithm bubbleSortAlgorithm)
    
    
 #### @Resource: 스프링이 이름(id)을 우선으로 bean 객체를 검색
