@@ -1,5 +1,5 @@
 
-###kubectl 설치
+### kubectl 설치
 -------------
 ```bash
 brew install kubernetes-cli
@@ -9,7 +9,7 @@ brew remove dkos/dkosctl/dkosctl brew install dkos/dkosctl/dkosctl
 brew install dkos/dkosctl/dkosctl
 ```
 
-###kubectl 명령어
+### kubectl 명령어
 -------------
 kubectl login → LDAP 로그인, DKOS 클러스터 사용 가능
 kubectl sc → 내가 권한이 있는 DKOS 클러스터를 선택 가능 → 내가 사용할 클러스터 선택 , 이 경우에는 melon-commerce-csm
