@@ -8,15 +8,15 @@ EJB로만 개발 가능한던 작업들을 단순 자바 빈으로도 가능하�
 -> 간소함 / 테스트 용이성 / 낮은 결합도
 
 ### 2.전략과 특징 
-**2.1 POJO**
-getter / setter를 가진 단순한 자바 오브젝트
-getter / setter를 가진 단순한 자바 오브젝트 > 의존성도 없고, 테스트도 용이하며 추후 수정이 편리
+**2.1 POJO** =
+getter / setter를 가진 단순한 자바 오브젝트  
+getter / setter를 가진 단순한 자바 오브젝트 > 의존성도 없고, 테스트도 용이하며 추후 수정이 편리  
 
 **2.2 DI**
-객체를 직접 생성하지 않고 외부로 부터 주입 받아 사용 -> 결합도가 낮아짐 
+객체를 직접 생성하지 않고 외부로 부터 주입 받아 사용 -> 결합도가 낮아짐   
 
-* DI가 적용되지 않은 경우
-   짱구 에피소드 밖에 플레이할수 없는 TV
+* DI가 적용되지 않은 경우  
+   짱구 에피소드 밖에 플레이할수 없는 TV  
 ```java
 public class VideoConnetTV implement TV (){
     private ZzangguEpicodeVideo video;
@@ -34,7 +34,7 @@ public class VideoConnetTV implement TV (){
 * DI가 적용된 경우   
   외부에서 비디오를 주입받아 플레이가 가능한 TV
   : 생성자 주입 방법
-```
+```java
 public class VideoConnetTV implement TV )
     private Video video;
 
@@ -48,7 +48,8 @@ public class VideoConnetTV implement TV )
 }
 ```
    : 셋터 주입 방법
-```public class VideoConnetTV implement TV )
+```java
+public class VideoConnetTV implement TV )
     private Video video;
 
     public VideoConnetTV() {
@@ -68,7 +69,7 @@ public class VideoConnetTV implement TV )
 관심사의 분리 : 각 서비스에서 공통적으로 처리되어야하는 “횡단관심사”를 분리한다. > 중복코드의 제거
 - 로깅/보안/트랜젝션 관리
 게임을 위한 TV이건 비디오를 위한 TV이건 TV(전자기기)종류는 모두 전원 On/Off가 필요
-```
+```java
 public class Power() {
      public void trunOn () {
         stream.println(“Trun on. Hello");
@@ -81,7 +82,7 @@ public class Power() {
 ```
 
 * AOP 적용 되지 않은 경우
-```
+```java
 public class VideoConnetTV implement TV )
     private ZzangguEpicodeVideo video;
     private Power power;
@@ -99,7 +100,7 @@ public class VideoConnetTV implement TV )
 }
 ```
 
-```
+```xml
 <aop:config>
     <aop:aspect ref=“power">
         <aop:pointcut id=“play" expression=“excution(* * .paly(…))"/>
