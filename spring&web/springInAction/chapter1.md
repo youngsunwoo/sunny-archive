@@ -1,4 +1,4 @@
-# chapter1 Spring속으로
+# chapter1# Spring속으로
 
 Spring  (Road Johnson)
 
@@ -16,7 +16,7 @@ getter / setter를 가진 단순한 자바 오브젝트 > 의존성도 없고, �
 
 * DI가 적용되지 않은 경우
    짱구 에피소드 밖에 플레이할수 없는 TV
-'''public class VideoConnetTV implement TV (){
+```public class VideoConnetTV implement TV (){
     private ZzangguEpicodeVideo video;
 
     public VideoConnetTV() {
@@ -26,12 +26,12 @@ getter / setter를 가진 단순한 자바 오브젝트 > 의존성도 없고, �
     public void playTheVideo () {
         video.play();
     }
-}'''
+}```
  
 * DI가 적용된 경우   
   외부에서 비디오를 주입받아 플레이가 가능한 TV
   : 생성자 주입 방법
-'''public class VideoConnetTV implement TV )
+```public class VideoConnetTV implement TV )
     private Video video;
 
     public VideoConnetTV(Video video) {
