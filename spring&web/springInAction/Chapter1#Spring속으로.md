@@ -139,3 +139,6 @@ JDBC, RestTemplet 등
  (9) Bean사용 준비완료! until ~Application Context소멸  
 (10) Disposable Bean 인터페이스 구현 > destroy()호출  
        * destroy-method 확인   
+
+
+https://www.evernote.com/l/AnkAXE5ruiFKNrkHF1VSl7HKEyHAWxi5Bdk  
