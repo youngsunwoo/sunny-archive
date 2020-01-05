@@ -182,7 +182,84 @@ JVM은 gc 메서드의 요청을 받아 가능하다면 가비지컬렌셕을 �
 
 ####`Q4 WeakReference란 무엇인가?`
 
+WeakReference란 제너릭 컨데이너 클래스로서, 들어있는 인스턴스에 강력한 참조가 없으면 가지비컬렉션의 수집대상이 된다.  
+위 메모리 누수 스택문제를 해결하기 위해서는 원소들의 WeakReferences 리스트를 유지해야 한다.  
+다른 참조가 없는 원소들은 가비지 컬렉션을 실행할 때 null로 설정된다.
 
+```java
+  public class WeakReferenceStack<E> {
+      
+      private final List<WeakReferenceStack<E>> stackReferences;
+      private int stackPoint = 0;
+      
+      public WeakReferenceStack(){
+          this.stackReferences = new ArrayList<>();
+      }
+      
+      public void push(E element){
+          this.stackReferences.add(stackPoint,new WeakReferenceStack<E>(element));
+          stackPoint==;
+      }
+      
+      public E pop(){
+          stackPoint--;
+          return this.stackReferences.get(stackPoint).get;
+      }
+      
+      public E peek(){
+          return this.stackReferences.get(stackPoint-1).get();
+      }
+  }
+```
+스택에 새로운 원소가 들어오면 WeakReferenceStack객체로 저장되며,  
+객체가 pop될 때에는 WeakReferenceStack 객체를 검색하고 객체를 얻기위해 get메소드가 호출된다.  
+해당 객체를 가르키는 클라이언트가 없을 경우, 다음 가비지 컬렌션의 삭제대상으로 선택 될 수 있다.  
+
+peak는 스택상단에 있는 원소를 삭제하지 않고 반환해준다.
+
+
+```java
+    @Test 
+    public void weakReferencesStackManipulation(){
+        final WeakReferenceStack<ValueContainer> stack = new WeakReferenceStack<ValueContainer>();
+        
+        final ValueContainer expected = new ValueContainer("Value for the stack");
+        stack.push(new ValueContainer("Value for the stack"));
+        
+        ValueContainer peekedValue = stack.peek();
+        
+        Assert.assertEquals(expected,peekedValue);
+        Assert.assertEquals(expected,stack.peek());
+        
+        peekedValue = null;
+        System.gc();
+        Assert.assertNull(stack.peek());
+        
+    }
+    
+    public class ValueContainer{
+        private final String value;
+        
+        public ValueContainer(final String value){
+            this.value = value;
+        }
+        
+        @Override
+        protected void finalize() throws Throwable{
+            super.finalize();;
+            System.out.println("Finalizing for " + toString());
+        }
+    }
+```
+ stack.push(expected)같은 형태로 객체를 삽입하면 강한 참조가 유지된다.   
+ 따라서 가비지 컬렉션에서 수집되지 않고 이 테스트는 실패한다. 
+ 
+ 테스트는 peek메소드를 가진 스택을 점검하고 스택에 있는 값이 원하는 값이 맞는지 확인한다. 
+ peekedValue의 참조는 null로 확인하고, 스택의 weakReferences안이 아니면 참조가 없다.  
+ 따라서 가지비 컬렉션에서 수집대상이 되어 메모리가 재 배치 되어야 한다.
+ 
+ JVM이 가비지컬렌션을 수행한 이후에는 해당 참조를 스택에서 사용할 수 없으며,  
+ finalize가 호출되었을때 표준출력에서 메세지를 확인해야 한다.
 
 
 
