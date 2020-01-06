@@ -1,11 +1,11 @@
 # Chapter19 이메일전송하기
-  
+#
 
-## 1. 이메일 전송을 위해 스프링 설정하기
+### 1. 이메일 전송을 위해 스프링 설정하기
 
 스프링에서는 MainSander 구현체를 통해 이메일 서버에 연결하여 메일을 전송한다.
   
-### 1.1 이메일 전송자 설정하기 
+#### 1.1 이메일 전송자 설정하기 
 
 ```java
     @Bean
@@ -47,7 +47,7 @@
 - JdniObjectFactoryBean을 사용하여 MailSession을 검색할수 있도록 빈을 설정한다.
 - 메일 세션을 JavaMailSenderImpl의 session프라퍼티에 연결해줌으로서 기존의 명시적인 서버 정성을 교체했다.   
  
-### 1.2 메일서버를 와이어링 하고 사용하기
+#### 1.2 메일서버를 와이어링 하고 사용하기
 ```java
     public class SpitterEmailServiceImpl {
     
@@ -66,9 +66,9 @@
         }
     }
 ```
----
-## 2. 이메일 메세지는 풍부하게 꾸미기
-### 2.1 파일첨부 추가하기
+#
+### 2. 이메일 메세지를 풍부하게 꾸미기
+#### 2.1 파일첨부 추가하기
 - 첨부파일이 포함된 메일은 멀티파트 메세지(MIME : Multipurpose Internet Mail Extension)를 생성해야 한다.
 - MailSender의 createMimeMessage()를 통해 해당 작업을 시작하자
 ```java
@@ -97,7 +97,7 @@
         mailSender.send(message);
     }
 ```
-### 2.2 리치 콘텐츠를 이용한 이메일 전송
+#### 2.2 리치 콘텐츠를 이용한 이메일 전송
 - helper의 두번째 파람에 true를 전달함으로서 메세지 텍스트를 HTML로 설정가능하다.
 ```java
     helper.setText("<html><body><img src='cid:spitterLogo'>" +
@@ -131,10 +131,10 @@
     }
 ```
 
----
-## 3.템플릿을 이용하여 이메일 생성하기
+#
+### 3.템플릿을 이용하여 이메일 생성하기
 
-### 3.1 Velocity 사용
+#### 3.1 Velocity 사용
 - Velocity는 아파치 템플릿 엔진으로 jsp를 대체한다.  
 - VelocityEngine을 SpitterEmailServiceImpl에 연결한다. 간단한 Bean 설정으로 가능하다.
 - 아래 소스에서 VelocityEngineFactoryBean에 설정해야하는 프로퍼티는 VelocityProperties로 클래스패스에서 템플릿을 로드하도록 설정했다.
@@ -178,7 +178,7 @@
 
 - 문자열 결합보다 가독성/유지보수측면에서 뛰어나다.
 
-### 3.1 Thymeleaf 사용
+#### 3.2 Thymeleaf 사용
 - Thymeleaf문법으로 템플릿을 작성한다. 
 ```html
 <!DOCTYPE html>
