@@ -185,9 +185,9 @@ public class SpittleController {
 2) IGNORE_EXISTING : 충돌을 무시하고 새로운 빈은 등록하지않는다. 
 3) REPLACING_EXISTING : 기존빈을 새로운 빈으로 대체한다. 
 ```
-```java
 
 - IGNORE_EXISTING 설정 예제
+```java
 @Bean
 public MBeanExporter mbeanExporter(SpittleController spittleController,
                                     MBeanInfoAssembler assembler) {
@@ -196,5 +196,91 @@ public MBeanExporter mbeanExporter(SpittleController spittleController,
     //enum값을 사용한다.
     exporter.setAssembler(assembler); exporter.setRegistrationPolicy(RegistrationPolicy.IGNORE_EXISTING); 
     return exporter;
+}
+```
+
+## 2. MBean 리모팅
+### 2.1 원격 MBean노출하기
+- ServerConnectionFactoryBean을 설정해서 MBean을 원격 객체로 이용할수 있다.
+```java
+@Bean
+public ConnectorServerFactoryBean connectorServerFactoryBean() {
+  return new ConnectorServerFactoryBean();
+}
+```
+- 리모팅을 위해서 RMI, SOAP, Hessian/Burler, IIOP등 다양한 구현체를 사용할 수 있다.
+- MBean 리모팅에 RMI를 이용하려면 아래처럼 ServiceUrl을 설정하면 된다.
+- ServerConnectionFactoryBean을 로컬호스트의 1099포르에서 리스닝하는 RMI레지스트르리에 바인딩한다. 
+```java
+@Bean
+public MBeanServerConnectionFactoryBean connectionFactoryBean() {
+  MBeanServerConnectionFactoryBean mbscfb =
+          new MBeanServerConnectionFactoryBean();
+  mbscfb.setServiceUrl(
+      "service:jmx:rmi://localhost/jndi/rmi://localhost:1099/spitter");
+  return mbscfb;
+}
+```
+- RmiRegistryFactoryBean 을 선언해서 RMI레지스트리를 시작한다 (feat.15장)
+```java
+@Bean
+public RmiRegistryFactoryBean rmiRegistryFB() {
+  RmiRegistryFactoryBean rmiRegistryFB = new RmiRegistryFactoryBean();
+  rmiRegistryFB.setPort(1099);
+  return rmiRegistryFB;
+}
+```
+### 2.2 원격 MBean에 엑세스 하기
+- ServerConnectionFactoryBean을 선언한다. 
+```java
+@Bean
+public MBeanServerConnectionFactoryBean connectionFactoryBean() {
+  MBeanServerConnectionFactoryBean mbscfb =
+          new MBeanServerConnectionFactoryBean();
+  mbscfb.setServiceUrl(
+      "service:jmx:rmi://localhost/jndi/rmi://localhost:1099/spitter");
+  return mbscfb;
+}
+```
+- MBeanServerConnectionFactoryBean에 의해 생성되는 MBeanServerConnection은 MBean서버로의 프록시 역할을 한다. 
+```java
+@Bean
+public JmxClient jmxClient(MBeanServerConnection connection) {
+  JmxClient jmxClient = new JmxClient();
+  jmxClient.setMbeanServerConnection(connection);
+  return jmxClient;
+}
+```
+- 실제 작동을 위하 몇몇 샘플 소스
+```java
+// 등록된 MBean갯수 확인
+int mbeanCount = mbeanServerConnection.getMBeanCount();
+System.out.println("There are " + mbeanCount + " MBeans");
+
+// 모든 MBean 이름을 확인
+// 2,3번째 파람은 리턴값을 가공하는데 사용된다.
+java.util.Set mbeanNames = mbeanServerConnection.queryNames(null, null);
+
+
+//어트리뷰트 가져오기 
+String cronExpression = mbeanServerConnection.getAttribute(
+new ObjectName("spitter:name=SpittleController"), "spittlesPerPage");
+
+//어트리뷰트 변경하기
+mbeanServerConnection.setAttribute( new ObjectName("spitter:name=SpittleController")
+                                    , new Attribute("spittlesPerPage", 10));
+```
+
+### 2.3 MBean프록시 만들기 
+MBeanProxyFactoryBean 프록시기반이 엑세스가 아닌 원격 서버에 직접 접근한다. 
+```java
+@Bean
+public MBeanProxyFactoryBean remoteSpittleControllerMBean(
+        MBeanServerConnection mbeanServerClient) {
+  MBeanProxyFactoryBean proxy = new MBeanProxyFactoryBean();
+  proxy.setObjectName("");
+  proxy.setServer(mbeanServerClient);
+  proxy.setProxyInterface(SpittleControllerManagedOperations.class);
+  return proxy;
 }
 ```
