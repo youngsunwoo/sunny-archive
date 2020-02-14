@@ -92,7 +92,7 @@ public class SpellCheckRunner {
 - @Configuration 어노테이션이 있는 클래스 내부의 @Bean 어노테이션이 붙은 메소드을 Bean으로 만들어준다. 
 ```java
 @Configuration
-	public class SpringJavaConfiguration {
+public class SpringJavaConfiguration {
  	@Bean
  	public Dictionary dictionary() throws IOException {
  		return new FileDictionary("/usr/sunny/documents/words");
@@ -111,14 +111,12 @@ final ApplicationContext context =
 ```
 
 ```xml
-<context:component-scan
- base-package="com.sunny.javainterviewsexposed.chapter16"/>
+<context:component-scan base-package="com.sunny.javainterviewsexposed.chapter16"/>
 ```
 
 #### ` Q3.  스코프란 무엇인가`  
 - 기본적으로 스프링의 빈의 인스턴드는 1개만 생성된다 -> 즉 싱글턴스코프이다.
-
-- **스코프 종류** 
+- 스코프 종류
 ```
 - singleton : 기본 싱글톤 스코프
 - prototype : 어플리케이션에서 요청시 (getBean()) 마다 스프링이 새 인스턴스를 생성
@@ -185,8 +183,8 @@ public SpellCheckApplication (final Dictionary dictionary) {
 
 - 컨택스트가 같은 타입의 빈을 여러개 가지고 있다면 @Qualifier를 통해 빈을 구체화 할 수 있다. 
 
-**(참고)**  
- @Autowired: 스프링이 타입(class)을 우선으로 bean 객체를 검색
+**(참고) Autowired과 @Resource 차이**  
+ #### @Autowired : 스프링이 타입(class)을 우선으로 bean 객체를 검색
 
   > * BinarySearchImpl은 SortAlgorithm 을 depends on 한다.
   > * SortAlgorithm은 BinarySearchImpl의 dependency다.
@@ -196,7 +194,7 @@ public SpellCheckApplication (final Dictionary dictionary) {
   > * 변수명을 dependency 빈 이름으로 (ex private SortAlgorithm bubbleSortAlgorithm)
    
    
-#### @Resource: 스프링이 이름(id)을 우선으로 bean 객체를 검색
+#### @Resource : 스프링이 이름(id)을 우선으로 bean 객체를 검색
 
   > * resourcing 의 bean 선택
   > * 지정한 name과 id가 같은 bean 객체
@@ -207,7 +205,7 @@ public SpellCheckApplication (final Dictionary dictionary) {
 
 -----
 ## 스프링 JDBC 
-
+  
 #### ` Q1.  스프링은 어떻게 JDBC 코드의 가독성을 개선하는가?`  
 
 - 기본 JDK API를 이용한 DB Connection
@@ -340,10 +338,80 @@ public class JdbcTemplateUsage {
 ## 통합테스트하기
 
 #### ` Q1.  어플리케이션 컨택스트가 올바르게 설정됐는지 어떻게 테스트 할 수 있는가?`  
+- @ContextConfiguration어노테이션을 사용하여 로드될 어플리케이션 컨택스트를 설정할 수 있다.
+
+- @Autuwired된 빈들은 테스트 실행시마다 어플리케이션 컨택스트에서 새로 로드된다.
+- 즉, @Before를 통해 테스트 실행정 어노테이션되는 것과 동일하다.
+- 테스트가 어플리케이션 컨택스트 상태를 변경해야 하는 경우 해당 클래스에 @FirtiesContext어노테이션을 추가하면,  
+테스트마다 전체 어플리케이션 컨택스트를 다시 로드한다. 
+```java
+@ContextConfiguration(
+ "classpath:com/sunny/javainterviewsexposed/chapter16/applicationContext.xml")
+@RunWith(SpringJUnit4ClassRunner.class)
+public class SpringIntegrationTest {
+	@Autowired
+	private SpellCheckApplication application;
+	@Test
+	public void checkWiring() {
+		assertNotNull(application);
+	}
+	@Test
+	public void useSpringIntegrationTests() {
+	final List<String> words = 
+		Arrays.asList("correct",
+					"valid",
+					"dfgluharg",
+					"acceptable");
+		final List<Integer> expectedInvalidIndices = Arrays.asList(2);
+		final List<Integer> actualInvalidIndices =
+		application.checkDocument(words);
+		assertEquals(expectedInvalidIndices, actualInvalidIndices);
+	}
+}
+```
 #### ` Q2.  통합테스트를 실행할 때 데이터베이스를 깨끗하게 유지하는 방법은 무엇인가`  
 
+- @Before가 실행되기 전에 트랜젝션이 열린다. 테스트가 실행되고 @After까지 실행되면 데이터가 롤백된다.
+- @Test 메서드 안에서 (명시적으로) commit이 되지 않는지 확인한다.  
+```java
+@ContextConfiguration( "classpath:com/sunny/javainterviewsexposed/" +
+						 "chapter16/databaseTestApplicationContext.xml")
+ public class SpringDatabaseTransactionTest extends AbstractTransactionalJUnit4SpringContextTests {
+	private int rowCount;
+	@Before
+	public void checkRowsInTable() {
+		this.rowCount = countRowsInTable("user");
+	}
+	@Before
+	public void checkUsersForTestDoNotExist() {
+		final int count = this.simpleJdbcTemplate.queryForInt(
+		"select count(*) from user where username in (?, ?, ?)",
+		"Alice",
+		"Bob",
+		"Charlie");
+		assertEquals(0, count);
+	}
+	@Test
+	public void runInTransaction() {
+		final List<Object[]> users = Arrays.asList(
+		new Object[]{UUID.randomUUID().toString(), "Alice"},
+		new Object[]{UUID.randomUUID().toString(), "Bob"},
+		new Object[]{UUID.randomUUID().toString(), "Charlie"}
+	);
+
+	this.simpleJdbcTemplate.batchUpdate("insert into user values (?, ?)", users);
+	
+	assertEquals(rowCount + users.size(), countRowsInTable("user"));
+	}
+}
+```
+- JUnut 4.11에서는 @Test메서드의 실행순서를 정해줄 수 있는 @FixMethodOrder 어노테이션을 제공한다.
+- 위 코드처럼 트랜젝션이 롤백되고 테이블이 비었는지 확인하는 코드를 작성하고 runInTransaction 다음에 실행되도록 할 수 있다. 
+- 테스트 순서를 명시하는건 좋지않다. 왜냐면 각 테스트는 독릭접으로 수행되어야하니까.. 
 
 
+- AbstractTransactionalJUnit4SpringContextTests를 확장하고 DataSource와 함께 어플리케이션 컨택스트를 제공
+- 테스트 set는 SimpleJdbcTemplate 객체에 접근하고 DB연산을 수행한다.  
 
 -----
 ## 스프링MVC 
@@ -354,7 +422,7 @@ public class JdbcTemplateUsage {
 - 이 파일은 서버가 어떤 어플리케이션이나 서블릿을 제공할지 명시한다. 
 - 즉, HttpSevlet을 확장하는 클래스를 제공하고 GET/POST에 어떻게 응답할지 정의한다. 
 
-- 스프링 MVC용 서블릿 컨테이너 정리 
+- 스프링 MVC용 서블릿 컨테이너 설정
 ```xml
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <web-app
@@ -367,21 +435,83 @@ public class JdbcTemplateUsage {
 	version="3.0">
 	<servlet>
 		<servlet-name>mvc</servlet-name>
-		<servlet-class>
-		org.springframework.web.servlet.DispatcherServlet
-		</servlet-class>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>mvc</servlet-name>
 		<url-pattern>/mvc/*</url-pattern>
 	</servlet-mapping>
-	</web-app>
+</web-app>
 ```
+- /mvc로 시작하는 모든 요청을 DispatcherServlet에 전달한다. 
+- DispatcherServlet에 요청이 전달되면 WEB-INF/[servlet-name]-servlet.xml 에서 XML 정의를 찾는다. 
+- 해당 xml에서 빈을 설정할수 있으며 서버가 실행될때 빈들이 초기화 된다. 
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd">
+	<context:component-scan base-package="com.sunny.javainterviewsexposed.chapter16.mvc"/>
+
+	<bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+		<property name="templateLoaderPath" value="/WEB-INF/freemarker/"/>
+	</bean>
+
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+		<property name="prefix" value=""/>
+		<property name="suffix" value=".ftl"/>
+	</bean>
+	<bean class="com.wiley.javainterviewsexposed.chapter16.mvc.DummySportsResultsService"/>
+</beans>
+```
+- context:component-scan을 통해 @Controller 어노테이션된 클래스를 찾을 패키지를 알려준다. 
+
+> 근데.. xml하지말고.. 스프링 3.0쓰고 자바로 설정하자..    
+> AbstractAnnotationConfigDispatcherServletInitializer 상속받자.. 
+> [(참고) Spring in Action > Chapter5# Spring MVC 시작하기](../spring&web/springInAction/Chapter5#SpringMVC시작하기.md)   <-이거 보자.. 
 
 #### ` Q2.  어떻게 스프링 MVC에서 쉽게 테스트 할 수 있는 웹 컨트롤러를 만들 수 있는가?`  
-#### ` Q3.  서버 측 로직을 요쳥 결과 표시와 어떻게 분리해서 유지하는가?`  
 
+  
+#### ` Q3.  서버 측 로직을 요쳥 결과 표시와 어떻게 분리해서 유지하는가?`  
+- 뷰는 컨트롤러를 통해 전달받은 모델을 보여준다. 
+- 뷰는 단순해야하고 컨트롤러는 모델을 전달하기 위한 작업을 수행해야 한다. 
+
+- 뷰에서 플레이스 홀더를 이용하여 동적데이터를 표현할 수 있다. (?)
+```java
+@RequestMapping("/planets")
+public String createSimpleModel(final Model model) {
+	model.addAttribute("now", new Date());
+	final Map<String, String> diameters = new HashMap<>();
+	diameters.put("Mercury", "3000 miles");
+	diameters.put("Venus", "7500 miles");
+	diameters.put("Earth", "8000 miles");
+	model.addAttribute("diameters", diameters);
+	return "diameters";
+}
+```
+
+```html
+<html>
+<head>
+ 	<title>Planet Diameters</title>
+</head>
+<body>
+	<#list diameters?keys as planet>
+	<b>${planet}</b>: ${diameters[planet]}<br/>
+	</#list>
+	This page was generated on <i>${now?datetime}</i>
+</body>
+</html>
+
+```
 #### ` Q4.  스프링은 다른 뷰 템플릿 엔진들과 함께 동작하도록 어떻게 설정할 수 있는가?`
 템플릿파일로 매핑은 어플리케이션 설정에서 뷰리졸버의 구현에 의존된다. 
 원래의(기본) 뷰 리졸버는 아래와 같다.   
