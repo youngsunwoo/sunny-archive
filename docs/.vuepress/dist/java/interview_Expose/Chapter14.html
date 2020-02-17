@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Chapter14 HTTP | Sunny Archive</title>
+    <meta name="description" content="개발 관련 블로그">
+    <meta name="generator" content="VuePress 1.3.0">
+    <link rel="icon" href="/sunny-archive/favicon.ico">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons">
+    
+    <link rel="preload" href="/sunny-archive/assets/css/0.styles.a7ac78a8.css" as="style"><link rel="preload" href="/sunny-archive/assets/js/app.20f77d52.js" as="script"><link rel="preload" href="/sunny-archive/assets/js/2.511b4fc5.js" as="script"><link rel="preload" href="/sunny-archive/assets/js/14.9b068972.js" as="script"><link rel="prefetch" href="/sunny-archive/assets/js/10.a0ef1271.js"><link rel="prefetch" href="/sunny-archive/assets/js/11.6541ddd8.js"><link rel="prefetch" href="/sunny-archive/assets/js/12.1903e15c.js"><link rel="prefetch" href="/sunny-archive/assets/js/13.197863a7.js"><link rel="prefetch" href="/sunny-archive/assets/js/15.54027cd4.js"><link rel="prefetch" href="/sunny-archive/assets/js/16.524f5d92.js"><link rel="prefetch" href="/sunny-archive/assets/js/17.11708487.js"><link rel="prefetch" href="/sunny-archive/assets/js/18.5d867f86.js"><link rel="prefetch" href="/sunny-archive/assets/js/19.0f648627.js"><link rel="prefetch" href="/sunny-archive/assets/js/20.27ef1d38.js"><link rel="prefetch" href="/sunny-archive/assets/js/21.77345df6.js"><link rel="prefetch" href="/sunny-archive/assets/js/22.085befa6.js"><link rel="prefetch" href="/sunny-archive/assets/js/23.8490966f.js"><link rel="prefetch" href="/sunny-archive/assets/js/24.ec8405cd.js"><link rel="prefetch" href="/sunny-archive/assets/js/25.b0db359b.js"><link rel="prefetch" href="/sunny-archive/assets/js/26.46aa84cd.js"><link rel="prefetch" href="/sunny-archive/assets/js/27.8c499cc1.js"><link rel="prefetch" href="/sunny-archive/assets/js/28.a0f23262.js"><link rel="prefetch" href="/sunny-archive/assets/js/3.6c4817b1.js"><link rel="prefetch" href="/sunny-archive/assets/js/4.360058bb.js"><link rel="prefetch" href="/sunny-archive/assets/js/5.c75d34e9.js"><link rel="prefetch" href="/sunny-archive/assets/js/6.7ef6ecd2.js"><link rel="prefetch" href="/sunny-archive/assets/js/7.e7a5c462.js"><link rel="prefetch" href="/sunny-archive/assets/js/8.07adb725.js"><link rel="prefetch" href="/sunny-archive/assets/js/9.026c5ddc.js">
+    <link rel="stylesheet" href="/sunny-archive/assets/css/0.styles.a7ac78a8.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/sunny-archive/" class="home-link router-link-active"><!----> <span class="site-name">Sunny Archive</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="https://github.com/youngsunWoo/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  GitHub
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="https://github.com/youngsunWoo/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  GitHub
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group collapsable depth-0"><a href="/sunny-archive/" class="sidebar-heading clickable router-link-active open"><span>책읽기</span> <span class="arrow down"></span></a> <ul class="sidebar-links sidebar-group-items"><li><section class="sidebar-group collapsable is-sub-group depth-1"><p class="sidebar-heading open"><span>JAVA</span> <span class="arrow down"></span></p> <ul class="sidebar-links sidebar-group-items"><li><section class="sidebar-group collapsable is-sub-group depth-2"><p class="sidebar-heading open"><span>JAVA 프로그래밍 면접 이렇게 준비한다</span> <span class="arrow down"></span></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/sunny-archive/java/interview_Expose/Chapter06.html" class="sidebar-link">Chapter06# 디자인패턴</a></li><li><a href="/sunny-archive/java/interview_Expose/Chapter08.html" class="sidebar-link">Chapter08# 자바기본(1)</a></li><li><a href="/sunny-archive/java/interview_Expose/Chapter10.html" class="sidebar-link">Chapter10# 자바가상머신(JVM)이해하기</a></li><li><a href="/sunny-archive/java/interview_Expose/Chapter14.html" class="active sidebar-link">Chapter14# HTTP</a></li><li><a href="/sunny-archive/java/interview_Expose/Chapter16.html" class="sidebar-link">Chapter16# 스프링 프레임워크</a></li><li><a href="/sunny-archive/java/interview_Expose/Chapter17.html" class="sidebar-link">Chapter17# 하이버네이트 사용하기</a></li></ul></section></li></ul></section></li><li><section class="sidebar-group collapsable is-sub-group depth-1"><p class="sidebar-heading"><span>스프링 인 액션</span> <span class="arrow right"></span></p> <!----></section></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="chapter14-http"><a href="#chapter14-http" class="header-anchor">#</a> Chapter14 HTTP</h1> <p></p><div class="table-of-contents"><ul><li><a href="#http메서드">HTTP메서드</a><ul><li><a href="#q1-http란-무엇인가">Q1. HTTP란 무엇인가?</a></li><li><a href="#q2-http메서드란-무엇인가">Q2. HTTP메서드란 무엇인가?</a></li><li><a href="#q3-http응답코드는-무엇을-알려주는가">Q3. HTTP응답코드는 무엇을 알려주는가?</a></li></ul></li><li><a href="#http클라이언트">HTTP클라이언트</a><ul><li><a href="#q1-어떻게-자바-클래스에서-http요청을-보낼-수-있는가">Q1. 어떻게 자바 클래스에서 HTTP요청을 보낼 수 있는가?</a></li><li><a href="#q2-자바의-내장-클래스를-이용하지-않고-전용-http클라이언드-라이브러리를-이용할-때의-장점은-무엇인가">Q2. 자바의 내장 클래스를 이용하지 않고 전용 HTTP클라이언드 라이브러리를 이용할 때의 장점은 무엇인가?</a></li></ul></li><li><a href="#rest를-이용해-http-서비스-만들기">REST를 이용해 HTTP 서비스 만들기</a><ul><li><a href="#q1-rest-uri는-어떻게-설계-되는가">Q1 REST URI는 어떻게 설계 되는가';</a></li><li><a href="#q2-자바에서-rest서비스를-어떻게-구현할-수-있는가">Q2 자바에서 REST서비스를 어떻게 구현할 수 있는가?</a></li></ul></li></ul></div><p></p> <h2 id="http메서드"><a href="#http메서드" class="header-anchor">#</a> HTTP메서드</h2> <h3 id="q1-http란-무엇인가"><a href="#q1-http란-무엇인가" class="header-anchor">#</a> <code>Q1. HTTP란 무엇인가?</code></h3> <p>HTTP 프로토콜이 어떻게 작동되는지 확인해보는 좋은 방법은 텔넷 어플리케이션을 이용해 HTTP요청을 수행해 보는 것이다.</p> <ul><li>위키피디아에 80포트로 텔넷 연결하기</li></ul> <div class="language-command extra-class"><pre class="language-text"><code>&gt; telnet en.wikipidia.org 80
+Trying 91.198.174.255...
+Connected to wikipidia-lb.esams.wikipidia.org.
+Escape character is '^'].
+</code></pre></div><ul><li>GET /HTTP/1.1 이라는 명령어는 입력하자.<br>
+GET명령어를 이용해 '/' 페이지를 얻고 1.1버전의 http프로토콜을 사용하라는 의미이다.
+키-값의형식의 헤더는 GET 줄아래에 포함해서 전송할 수 있다.</li></ul> <div class="language-command extra-class"><pre class="language-text"><code>GET /HTTP/1.1
+
+HTTP/1.0 200 OK
+Server Apache
+X-Content-Type-Options: nosniff
+Cache-Control: x-maxage=3600, must-revalidate, max-age=0
+Last-Modified: Mon, 13 May 2013 17:07:15 GMT
+Vary: Accept-Encoding
+Content-length: 6071
+Content-Type: text/html; characterSet=utf-8
+Connection: close
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;mul&quot; dir=&quot;ltr&quot;&gt;
+.
+.
+.
+&lt;/body&gt;
+&lt;/html&gt;
+
+</code></pre></div><ul><li><p>서버의 응답 첫줄은 HTTP/1.0 200 OK<br>
+1.0버전의 프로토콜을 이용해 클라이어트에게 성공응답인 200 OK응답을 보낸다.</p></li> <li><p>다음행은 응답에 대한 메타 데이터로 클라이언트가 응답의 본문을 어떻게 판단할지 도와주도록 언어와 길이를 반환한다.</p></li> <li><p>다음행은 빈 행으로 본문의 시작은 알린다</p></li></ul> <h3 id="q2-http메서드란-무엇인가"><a href="#q2-http메서드란-무엇인가" class="header-anchor">#</a> <code>Q2. HTTP메서드란 무엇인가?</code></h3> <p>HTTP메서드는 종종 '동사'(verb)로 불리는데 웹서버에 요청한 자원을 이용해 무슨 동작을 해야하는지 알려주기 때문이다.</p> <p>서버가 구현하는 일반적인 메서드는 아래와 같으며, GET, HEAD 꼭 필요한 메서드이다.</p> <ul><li>GET<br>
+요청된 자원을 제공한다. 변경이 없어야한다.</li> <li>PUT<br>
+요청된 콘텐츠를 위한 자원을 업데이트(덮어쓰기)한다. &gt; 신규 콘텐츠 설정</li> <li>POST<br>
+요청된 콘텐츠를 위한 자원의 내용을 새로 설정한다. &gt; 기존 콘텐츠 업데이트</li> <li>DELETE<br>
+요청된 자원을 삭제한다.</li> <li>HEAD<br>
+GET요청과 비슷하지만 응답코드와 헤더만 반환단다.</li> <li>OPTIONS<br>
+클라이언트가 사용할수 있는 HTTP메서드가 어떤것이 있는지 확인한다.</li></ul> <h3 id="q3-http응답코드는-무엇을-알려주는가"><a href="#q3-http응답코드는-무엇을-알려주는가" class="header-anchor">#</a> <code>Q3. HTTP응답코드는 무엇을 알려주는가?</code></h3> <p>2XX 코드는 요청과 응답이 성공적인 겨우 반환된다.</p> <ul><li>201 Created<br>
+PUT요청이 성공하고 자원이 생성되었다는 걸 알려준다.</li> <li>204 No Content</li> <li>POST<br>
+요청은 성공했으나 서버는 클라이언트에 추가정보를 제공하지 않는다. 주로 PUT,POST,DELETE 요청을 성공했을때 사용된다.</li></ul> <p>4XX 코드는 클라이언트가 유효한 만들지 못햇다는 것을 알려준다.</p> <ul><li>400 Bad Request 클라이언트가 잘못된 요청을 보냈다.</li> <li>403 Forbidden 클라이언트가 자원을 요청할 권한이 없다.</li> <li>404 Not Found 요청한 자원이 존재하지 않는다.</li> <li>405 Method Not Allowed 자원 요청시 잘못된 HTTP 메서드를 사용했다.</li></ul> <p>5XX 코드는 서버 이슈가 있을 경우 반환된다.</p> <ul><li>500 Internal Server Error 일반적으로 메세지로 서버 전체가 아닌 일부 자원만 이용할수 없는 경우</li> <li>503 Service Unavailable 현재 서버를 이용할 수 없다.</li></ul> <hr> <h2 id="http클라이언트"><a href="#http클라이언트" class="header-anchor">#</a> HTTP클라이언트</h2> <h3 id="q1-어떻게-자바-클래스에서-http요청을-보낼-수-있는가"><a href="#q1-어떻게-자바-클래스에서-http요청을-보낼-수-있는가" class="header-anchor">#</a> <code>Q1. 어떻게 자바 클래스에서 HTTP요청을 보낼 수 있는가?</code></h3> <ul><li>기본 HTTP요청 구조</li></ul> <div class="language-Java extra-class"><pre class="language-java"><code> <span class="token annotation punctuation">@Test</span>
+	<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">makeBareHttpRequest</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span><span class="token punctuation">{</span>
+		<span class="token keyword">final</span> <span class="token class-name">URL</span> url <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token function">URL</span><span class="token punctuation">(</span><span class="token string">&quot;http&quot;</span><span class="token punctuation">,</span><span class="token string">&quot;en.wikipedia.org&quot;</span><span class="token punctuation">,</span><span class="token string">&quot;/&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token keyword">final</span> <span class="token class-name">HttpURLConnection</span> connection <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">HttpURLConnection</span><span class="token punctuation">)</span> url<span class="token punctuation">.</span><span class="token function">openConnection</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		connection<span class="token punctuation">.</span><span class="token function">setRequestMethod</span><span class="token punctuation">(</span><span class="token string">&quot;GET&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+		<span class="token keyword">final</span> <span class="token class-name">InputStream</span> responseInputSteam <span class="token operator">=</span> connection<span class="token punctuation">.</span><span class="token function">getInputStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+		<span class="token keyword">final</span> <span class="token keyword">int</span> responseCode <span class="token operator">=</span>  connection<span class="token punctuation">.</span><span class="token function">getResponseCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token keyword">final</span> <span class="token class-name">String</span> response <span class="token operator">=</span> <span class="token class-name">IoUtils</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span>responseInputSteam<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+		responseInputSteam<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+		<span class="token class-name">Assert</span><span class="token punctuation">.</span><span class="token function">assertEquals</span><span class="token punctuation">(</span><span class="token number">200</span><span class="token punctuation">,</span>responseCode<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+</code></pre></div><ul><li>아파치 HttpClient 이용</li></ul> <div class="language-java extra-class"><pre class="language-java"><code><span class="token annotation punctuation">@Test</span>
+	<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">makeApacheHttpRequest</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span><span class="token punctuation">{</span>
+
+		<span class="token keyword">final</span> <span class="token class-name">CloseableHttpClient</span> client <span class="token operator">=</span> <span class="token class-name">HttpClients</span><span class="token punctuation">.</span><span class="token function">createDefault</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token class-name">HttpGet</span> get <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HttpGet</span><span class="token punctuation">(</span><span class="token string">&quot;en.wikipedia.org&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+		<span class="token keyword">final</span> <span class="token class-name">HttpResponse</span> response <span class="token operator">=</span> client<span class="token punctuation">.</span><span class="token function">execute</span><span class="token punctuation">(</span>get<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token keyword">final</span> <span class="token keyword">int</span> responseCode <span class="token operator">=</span>  response<span class="token punctuation">.</span><span class="token function">getStatusLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getStatusCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+		<span class="token keyword">final</span> <span class="token class-name">HttpEntity</span> entity <span class="token operator">=</span> response<span class="token punctuation">.</span><span class="token function">getEntity</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token keyword">final</span> <span class="token class-name">InputStream</span> responseBody <span class="token operator">=</span> entity<span class="token punctuation">.</span><span class="token function">getContent</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+		<span class="token class-name">Assert</span><span class="token punctuation">.</span><span class="token function">assertEquals</span><span class="token punctuation">(</span><span class="token number">200</span><span class="token punctuation">,</span>responseCode<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+</code></pre></div><h3 id="q2-자바의-내장-클래스를-이용하지-않고-전용-http클라이언드-라이브러리를-이용할-때의-장점은-무엇인가"><a href="#q2-자바의-내장-클래스를-이용하지-않고-전용-http클라이언드-라이브러리를-이용할-때의-장점은-무엇인가" class="header-anchor">#</a> <code>Q2. 자바의 내장 클래스를 이용하지 않고 전용 HTTP클라이언드 라이브러리를 이용할 때의 장점은 무엇인가?</code></h3> <p>프록시를 통해 HTTP요청을 실행할 때 기본 HttpURLConnection 클래스를 이용하는 경우,<br>
+시스템 속성인 http.proxyHost와 http.proxyPort를 설정해야 한다.</p> <p>HttpClient를 사용하는 경우엔 라이브러이에서 AuthenticationbStrategy 인터페이스를 구현해 속성을 붙일수 있다.</p> <p>또한, 쿠키도 HttpURLConnection 클래스로는 관리할 수 없다.</p> <hr> <h2 id="rest를-이용해-http-서비스-만들기"><a href="#rest를-이용해-http-서비스-만들기" class="header-anchor">#</a> REST를 이용해 HTTP 서비스 만들기</h2> <h3 id="q1-rest-uri는-어떻게-설계-되는가"><a href="#q1-rest-uri는-어떻게-설계-되는가" class="header-anchor">#</a> <code>Q1 REST URI는 어떻게 설계 되는가';</code></h3> <p>REST URI는 단일자원 혹은 여러가지 자원의 묶음을 가리킨다.<br>
+ex) /user/1234 - id가 1234인 사용자의 세부 정보<br>
+/users - 모든 사용자의 정보 목록</p> <p>HTTP 메소드는 자원을 얻기위한 동작이 뭔지 알려준다.<br>
+/user/1234 와 같은 요청을 보내는 경우</p> <ul><li>GET 해당 사용자의 정보를 반환한다.</li> <li>POST 새로운 사용자를 생성한다.</li> <li>PUT 기존 사용자의 정보를 수정한다.</li> <li>DELETE 해당 사용자 정보를 삭제하낟.</li></ul> <h3 id="q2-자바에서-rest서비스를-어떻게-구현할-수-있는가"><a href="#q2-자바에서-rest서비스를-어떻게-구현할-수-있는가" class="header-anchor">#</a> <code>Q2 자바에서 REST서비스를 어떻게 구현할 수 있는가?</code></h3> <ul><li>Spring MVC 를 이용한 REST서비스 설정</li></ul> <div class="language-java extra-class"><pre class="language-java"><code><span class="token annotation punctuation">@RequestMapping</span><span class="token punctuation">(</span><span class="token string">&quot;/users/{id}&quot;</span><span class="token punctuation">)</span>
+	<span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">gerUserId</span><span class="token punctuation">(</span><span class="token annotation punctuation">@PathVariable</span> <span class="token keyword">int</span> userId<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token comment">// id 경로 변수를 userId 변수로 추출함.</span>
+	<span class="token punctuation">}</span>
+</code></pre></div><p>HTTP서비스의 중요한 기능은 멱등성이다.<br>
+즉, REST서비스의 PUT,DELETE,GET요청을 여러번 요청해도 결과가 달라지지 않아야하며,<br>
+여러번 호출되더라도 한번만 호출된 것과 같은 효과를 내어야 한다.</p> <p>해당 개념은 클라이언트가 요청이 성공적인지 확신할 수 없는 경우 다시 요청을 보내도 문제가 생기지 않느다는 것이다.</p></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/sunny-archive/java/interview_Expose/Chapter10.html" class="prev">
+        Chapter10# 자바가상머신(JVM)이해하기
+      </a></span> <span class="next"><a href="/sunny-archive/java/interview_Expose/Chapter16.html">
+        Chapter16# 스프링 프레임워크
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/sunny-archive/assets/js/app.20f77d52.js" defer></script><script src="/sunny-archive/assets/js/2.511b4fc5.js" defer></script><script src="/sunny-archive/assets/js/14.9b068972.js" defer></script>
+  </body>
+</html>
